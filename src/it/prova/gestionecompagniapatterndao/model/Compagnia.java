@@ -1,6 +1,7 @@
 package it.prova.gestionecompagniapatterndao.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +10,14 @@ public class Compagnia {
 	private Long id;
 	private String ragionesociale;
 	private double fatturatoAnnuo;
-	private Date dataFondazione;
+	private LocalDate dataFondazione;
 	private List<Impiegato> impiegati = new ArrayList<>();
 	
 	public Compagnia() {
 		
 	}
 	
-	public Compagnia(Long id, String ragionesociale, double fatturatoAnnuo, Date dataFondazione) {
+	public Compagnia(Long id, String ragionesociale, double fatturatoAnnuo, LocalDate dataFondazione) {
 		super();
 		this.id = id;
 		this.ragionesociale = ragionesociale;
@@ -24,7 +25,7 @@ public class Compagnia {
 		this.dataFondazione = dataFondazione;
 	}
 
-	public Compagnia(Long id, String ragionesociale, double fatturatoAnnuo, Date dataFondazione,
+	public Compagnia(Long id, String ragionesociale, double fatturatoAnnuo, LocalDate dataFondazione,
 			List<Impiegato> impiegati) {
 		super();
 		this.id = id;
@@ -51,10 +52,10 @@ public class Compagnia {
 	public void setFatturatoAnnuo(double fatturatoAnnuo) {
 		this.fatturatoAnnuo = fatturatoAnnuo;
 	}
-	public Date getDataFondazione() {
+	public LocalDate getDataFondazione() {
 		return dataFondazione;
 	}
-	public void setDataFondazione(Date dataFondazione) {
+	public void setDataFondazione(LocalDate dataFondazione) {
 		this.dataFondazione = dataFondazione;
 	}
 	public List<Impiegato> getImpiegati() {
