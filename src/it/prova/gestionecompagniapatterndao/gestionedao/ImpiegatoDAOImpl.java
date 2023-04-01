@@ -171,7 +171,13 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 		return null;
 	}
 	
-/*	public List findAllByCompagnia(Compagnia compagniaInput) throws Exception {
+	public List findAllByCompagnia(Compagnia compagniaInput) throws Exception {
+		return null;
+		
+/*		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		
 		List<Impiegato> result = new ArrayList<Impiegato>();
 
 		if (compagniaInput == null)
@@ -179,7 +185,7 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 
 		Impiegato temp = null;
 		try (Connection c = MyConnection.getConnection();
-				PreparedStatement ps = c.prepareStatement("select * from impiegato i inner join compagnia c on c.id=i.id_compagnia where id_compagnia=?; ")) {
+				PreparedStatement ps = c.prepareStatement("select d from impiegato i inner join compagnia c on c.id=i.id_compagnia where id_compagnia=?; ")) {
 
 			ps.setLong(1, compagniaInput.getId());
 			try (ResultSet rs = ps.executeQuery()) {
@@ -204,13 +210,42 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 			throw new RuntimeException(e);
 		}
 		return result;
-
+*/
 	}
 
-*/
+
 	public int countByDataFondazioneCompagniaGreaterThan(Date dataInput) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		if (dataInput == null || dataInput==null)
+			throw new Exception("Valore di input non ammesso.");
+
+		int contatore = 0;
+
+		try (PreparedStatement ps = connection.prepareStatement("select count(datafondazione) from compagnia where datafondazione > ? ;")) {
+			// quando si fa il setDate serve un tipo java.sql.Date
+			ps.setDate(1, dataInput);
+			
+			try (ResultSet rs = ps.executeQuery();) {
+				if (rs.next()) {
+					Compagnia compagniaTemp = new Compagnia();
+					compagniaTemp.setRagionesociale(rs.getString("ragionesociale"));
+					compagniaTemp.setFatturatoAnnuo(rs.getDouble("fatturatoannuo"));
+					compagniaTemp.setDataFondazione(
+							rs.getDate("datafondazione") != null ? rs.getDate("datafondazione").toLocalDate() : null);
+					compagniaTemp.setId(rs.getLong("ID"));
+					contatore++;
+				}
+			} // niente catch qui
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+		return contatore;
 	}
 
 	public List findAllByCompagniaConFatturatoMaggioreDi(int fattura) throws Exception {
@@ -223,11 +258,7 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 		return null;
 	}
 	
-	public List<Impiegato> findAllByCompagnia(Compagnia compagniaInput) throws Exception {
-		
-		//METODO COMMENTATO
-		
-		return null;
-	}
+	
+	
 
 }

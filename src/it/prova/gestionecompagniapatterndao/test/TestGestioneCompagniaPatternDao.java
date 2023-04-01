@@ -6,13 +6,15 @@ import it.prova.gestionecompagniapatterndao.dao.*;
 import it.prova.gestionecompagniapatterndao.connection.MyConnection;
 import it.prova.gestionecompagniapatterndao.gestionedao.CompagniaDAO;
 import it.prova.gestionecompagniapatterndao.gestionedao.CompagniaDAOImpl;
+import it.prova.gestionecompagniapatterndao.gestionedao.ImpiegatoDAO;
 
 public class TestGestioneCompagniaPatternDao {
 
 	public static void main(String[] args) {
 
 		CompagniaDAO compagniaDAOInstance = null;
-//		ImpiegatoDAO impiegatoDAOInstance = null;
+		
+		
 		// ##############################################################################################################
 		// Grande novità: la Connection viene allestista dal chiamante!!! Non è più a
 		// carico dei singoli metodi DAO!!!
@@ -20,13 +22,11 @@ public class TestGestioneCompagniaPatternDao {
 
 		try (Connection connection = MyConnection.getConnection(Constants.DRIVER_NAME, Constants.CONNECTION_URL)) {
 			// ecco chi 'inietta' la connection: il chiamante
-	//		compagniaDAOInstance = new CompagniaDAOImpl(connection);
+			compagniaDAOInstance = new CompagniaDAOImpl(connection);
 			
 
-	//		System.out.println("AAAA");
-		
-		
-		
+		//	System.out.println(compagniaDAOInstance.list());
+					
 			// -------------
 
 		} catch (Exception e) {
@@ -34,4 +34,12 @@ public class TestGestioneCompagniaPatternDao {
 		}
 
 	}
+	
+	
+	
+	
+	
+		public static void TestGet(CompagniaDAO compagnia) {
+			
+		}
 }
