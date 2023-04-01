@@ -1,4 +1,4 @@
-package it.prova.gestionecompagniapatterndao.dao.user;
+package it.prova.gestionecompagniapatterndao.dao;
 
 public interface Constants {
 

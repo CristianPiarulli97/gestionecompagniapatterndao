@@ -1,15 +1,16 @@
 package it.prova.gestionecompagniapatterndao.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class Impiegato {
 	
 	private Long id;
 	private String nome;
 	private String cognome;
-	private String codicefiscale;
-	private Date dataDiNascita;
-	private Date dataAssunzione;
+	private String codiceFiscale;
+	private LocalDate dataDiNascita;
+	private LocalDate dataAssunzione;
 	private Compagnia compagnia;
 	
 	public Impiegato() {
@@ -17,26 +18,26 @@ public class Impiegato {
 	}
 	
 	
-	public Impiegato(Long id, String nome, String cognome, String codicefiscale, Date dataDiNascita,
-			Date dataAssunzione) {
+	public Impiegato(Long id, String nome, String cognome, String codiceFiscale, LocalDate dataDiNascita,
+			LocalDate dataAssunzione) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.cognome = cognome;
-		this.codicefiscale = codicefiscale;
+		this.codiceFiscale = codiceFiscale;
 		this.dataDiNascita = dataDiNascita;
 		this.dataAssunzione = dataAssunzione;
 	}
 
 
 
-	public Impiegato(Long id, String nome, String cognome, String codicefiscale, Date dataDiNascita,
-			Date dataAssunzione, Compagnia compagnia) {
+	public Impiegato(Long id, String nome, String cognome, String codiceFiscale, LocalDate dataDiNascita,
+			LocalDate dataAssunzione, Compagnia compagnia) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.cognome = cognome;
-		this.codicefiscale = codicefiscale;
+		this.codiceFiscale = codiceFiscale;
 		this.dataDiNascita = dataDiNascita;
 		this.dataAssunzione = dataAssunzione;
 		this.compagnia = compagnia;
@@ -73,32 +74,32 @@ public class Impiegato {
 	}
 
 
-	public String getCodicefiscale() {
-		return codicefiscale;
+	public String getCodiceFiscale() {
+		return codiceFiscale;
 	}
 
 
-	public void setCodicefiscale(String codicefiscale) {
-		this.codicefiscale = codicefiscale;
+	public void setCodiceFiscale(String codiceFiscale) {
+		this.codiceFiscale = codiceFiscale;
 	}
 
 
-	public Date getDataDiNascita() {
+	public LocalDate getDataDiNascita() {
 		return dataDiNascita;
 	}
 
 
-	public void setDataDiNascita(Date dataDiNascita) {
+	public void setDataDiNascita(LocalDate dataDiNascita) {
 		this.dataDiNascita = dataDiNascita;
 	}
 
 
-	public Date getDataAssunzione() {
+	public LocalDate getDataAssunzione() {
 		return dataAssunzione;
 	}
 
 
-	public void setDataAssunzione(Date dataAssunzione) {
+	public void setDataAssunzione(LocalDate dataAssunzione) {
 		this.dataAssunzione = dataAssunzione;
 	}
 
@@ -115,7 +116,7 @@ public class Impiegato {
 
 	@Override
 	public String toString() {
-		return "Impiegato [id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", codicefiscale=" + codicefiscale
+		return "Impiegato [id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", codiceFiscale=" + codiceFiscale
 				+ ", dataDiNascita=" + dataDiNascita + ", dataAssunzione=" + dataAssunzione + ", compagnia=" + compagnia
 				+ "]";
 	}
