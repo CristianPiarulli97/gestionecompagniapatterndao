@@ -30,21 +30,38 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 		try (Statement ps = connection.createStatement(); ResultSet rs = ps.executeQuery("Select * from impiegato")) {
 
 			while (rs.next()) {
-				Impiegato impiegatotemp = new Impiegato();
-				impiegatotemp.setNome(rs.getString("nome"));
-				impiegatotemp.setCognome(rs.getString("Cognome"));
-				impiegatotemp.setCodiceFiscale(rs.getString("codicefiscale"));
-				impiegatotemp.setDataDiNascita(
+				Impiegato impiegatoTemp = new Impiegato();
+				
+				impiegatoTemp.setNome(rs.getString("nome"));
+				impiegatoTemp.setCognome(rs.getString("Cognome"));
+				impiegatoTemp.setCodiceFiscale(rs.getString("codicefiscale"));
+				impiegatoTemp.setDataDiNascita(
 						rs.getDate("datadinascita") != null ? rs.getDate("datadinascita").toLocalDate() : null);
-				impiegatotemp.setDataAssunzione(
+				impiegatoTemp.setDataAssunzione(
 						rs.getDate("datadiassunzione") != null ? rs.getDate("datadiassunzione").toLocalDate() : null);
-				impiegatotemp.setId(rs.getLong("id"));
-				result.add(impiegatotemp);			}
+				impiegatoTemp.setId(rs.getLong("id"));
+				result.add(impiegatoTemp);			
+			
+				Compagnia compagniaTemp = new Compagnia();
+				
+				compagniaTemp.setId(rs.getLong("id"));
+				compagniaTemp.setRagionesociale(rs.getString("ragionesociale"));
+				compagniaTemp.setFatturatoAnnuo(rs.getDouble("fatturatoannuo"));
+				compagniaTemp.setDataFondazione(
+						rs.getDate("datafondazione") != null ? rs.getDate("datafondazione").toLocalDate() : null);
+				
+				impiegatoTemp.setCompagnia(compagniaTemp);
+				result.add(impiegatoTemp);
+			}
 
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return null;
-
+		return result;
 	}
+
+	
 	//OK
 	public Impiegato get(Long idInput) throws Exception {
 		
@@ -154,11 +171,43 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 		return null;
 	}
 	
-	public List findAllByCompagnia(Compagnia compagniaInput) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+/*	public List findAllByCompagnia(Compagnia compagniaInput) throws Exception {
+		List<Impiegato> result = new ArrayList<Impiegato>();
+
+		if (compagniaInput == null)
+			throw new RuntimeException("Impossibile caricare Negozio: id mancante!");
+
+		Impiegato temp = null;
+		try (Connection c = MyConnection.getConnection();
+				PreparedStatement ps = c.prepareStatement("select * from impiegato i inner join compagnia c on c.id=i.id_compagnia where id_compagnia=?; ")) {
+
+			ps.setLong(1, compagniaInput.getId());
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					temp = new Impiegato();
+					temp.setId(rs.getLong("id"));
+					temp.setNome(rs.getString("nome"));
+					temp.setCognome(rs.getString("cognome"));
+					temp.getCodiceFiscale(rs.getString("codicefiscale"));
+					temp.get
+
+					result.add(temp);
+
+				}
+
+				negozioInput.setArticoli(result);
+
+			} // niente catch qui
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		return result;
+
 	}
 
+*/
 	public int countByDataFondazioneCompagniaGreaterThan(Date dataInput) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
@@ -171,6 +220,13 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 
 	public List findAllErroriAssunzione() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public List<Impiegato> findAllByCompagnia(Compagnia compagniaInput) throws Exception {
+		
+		//METODO COMMENTATO
+		
 		return null;
 	}
 
