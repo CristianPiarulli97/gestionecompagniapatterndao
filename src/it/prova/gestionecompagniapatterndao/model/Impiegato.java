@@ -9,7 +9,7 @@ public class Impiegato {
 	private String nome;
 	private String cognome;
 	private String codiceFiscale;
-	private LocalDate dataDiNascita;
+	private LocalDate dataNascita;
 	private LocalDate dataAssunzione;
 	private Compagnia compagnia;
 	
@@ -17,28 +17,37 @@ public class Impiegato {
 		
 	}
 	
+	public Impiegato(String nome, String cognome, String codiceFiscale, LocalDate dataNascita,
+			LocalDate dataAssunzione) {
+		
+		this.nome = nome;
+		this.cognome = cognome;
+		this.codiceFiscale = codiceFiscale;
+		this.dataNascita = dataNascita;
+		this.dataAssunzione = dataAssunzione;
+	}
 	
-	public Impiegato(Long id, String nome, String cognome, String codiceFiscale, LocalDate dataDiNascita,
+	public Impiegato(Long id, String nome, String cognome, String codiceFiscale, LocalDate dataNascita,
 			LocalDate dataAssunzione) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.cognome = cognome;
 		this.codiceFiscale = codiceFiscale;
-		this.dataDiNascita = dataDiNascita;
+		this.dataNascita = dataNascita;
 		this.dataAssunzione = dataAssunzione;
 	}
 
 
 
-	public Impiegato(Long id, String nome, String cognome, String codiceFiscale, LocalDate dataDiNascita,
+	public Impiegato(Long id, String nome, String cognome, String codiceFiscale, LocalDate dataNascita,
 			LocalDate dataAssunzione, Compagnia compagnia) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.cognome = cognome;
 		this.codiceFiscale = codiceFiscale;
-		this.dataDiNascita = dataDiNascita;
+		this.dataNascita = dataNascita;
 		this.dataAssunzione = dataAssunzione;
 		this.compagnia = compagnia;
 	}
@@ -84,13 +93,13 @@ public class Impiegato {
 	}
 
 
-	public LocalDate getDataDiNascita() {
-		return dataDiNascita;
+	public LocalDate getDataNascita() {
+		return dataNascita;
 	}
 
 
-	public void setDataDiNascita(LocalDate dataDiNascita) {
-		this.dataDiNascita = dataDiNascita;
+	public void setDataNascita(LocalDate dataNascita) {
+		this.dataNascita = dataNascita;
 	}
 
 
@@ -117,7 +126,7 @@ public class Impiegato {
 	@Override
 	public String toString() {
 		return "Impiegato [id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", codiceFiscale=" + codiceFiscale
-				+ ", dataDiNascita=" + dataDiNascita + ", dataAssunzione=" + dataAssunzione + ", compagnia=" + compagnia
+				+ ", dataDiNascita=" + dataNascita + ", dataAssunzione=" + dataAssunzione + ", compagnia=" + compagnia
 				+ "]";
 	}
 	

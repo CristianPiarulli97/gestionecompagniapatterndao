@@ -31,27 +31,17 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 
 			while (rs.next()) {
 				Impiegato impiegatoTemp = new Impiegato();
-				
+
 				impiegatoTemp.setNome(rs.getString("nome"));
 				impiegatoTemp.setCognome(rs.getString("Cognome"));
 				impiegatoTemp.setCodiceFiscale(rs.getString("codicefiscale"));
-				impiegatoTemp.setDataDiNascita(
-						rs.getDate("datadinascita") != null ? rs.getDate("datadinascita").toLocalDate() : null);
+				impiegatoTemp.setDataNascita(
+						rs.getDate("datanascita") != null ? rs.getDate("datanascita").toLocalDate() : null);
 				impiegatoTemp.setDataAssunzione(
-						rs.getDate("datadiassunzione") != null ? rs.getDate("datadiassunzione").toLocalDate() : null);
+						rs.getDate("dataassunzione") != null ? rs.getDate("dataassunzione").toLocalDate() : null);
 				impiegatoTemp.setId(rs.getLong("id"));
-				result.add(impiegatoTemp);			
-			
-				Compagnia compagniaTemp = new Compagnia();
-				
-				compagniaTemp.setId(rs.getLong("id"));
-				compagniaTemp.setRagionesociale(rs.getString("ragionesociale"));
-				compagniaTemp.setFatturatoAnnuo(rs.getDouble("fatturatoannuo"));
-				compagniaTemp.setDataFondazione(
-						rs.getDate("datafondazione") != null ? rs.getDate("datafondazione").toLocalDate() : null);
-				
-				impiegatoTemp.setCompagnia(compagniaTemp);
 				result.add(impiegatoTemp);
+
 			}
 
 		} catch (Exception e) {
@@ -81,9 +71,9 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 					result.setNome(rs.getString("NOME"));
 					result.setCognome(rs.getString("COGNOME"));
 					result.setCodiceFiscale(rs.getString("codicefiscale"));
-					result.setDataDiNascita(rs.getDate("DATECREATED") != null ? rs.getDate("DATECREATED").toLocalDate() : null);
+					result.setDataNascita(rs.getDate("datanascita") != null ? rs.getDate("datanascita").toLocalDate() : null);
 					result.setDataAssunzione(
-							rs.getDate("DATECREATED") != null ? rs.getDate("DATECREATED").toLocalDate() : null);
+							rs.getDate("dataassunzione") != null ? rs.getDate("dataassunzione").toLocalDate() : null);
 					result.setId(rs.getLong("ID"));
 				} else {
 					result = null;
@@ -107,11 +97,11 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 
 		int result = 0;
 		try (PreparedStatement ps = connection.prepareStatement(
-				"UPDATE compagnia SET nome=?, cognome=?, codice fiscale=? ,datadinascita=? , dataassunzione=? , where id=?;")) {
+				"UPDATE compagnia SET nome=?, cognome=?, codice fiscale=? ,datanascita=? , dataassunzione=? , where id=?;")) {
 			ps.setString(1, input.getNome());
 			ps.setString(2, input.getCognome());
 			ps.setString(3, input.getCodiceFiscale());
-			ps.setDate(4, java.sql.Date.valueOf(input.getCodiceFiscale()));
+			ps.setDate(4, java.sql.Date.valueOf(input.getDataNascita()));
 			ps.setDate(5, java.sql.Date.valueOf(input.getDataAssunzione()));
 			ps.setLong(6, input.getId());
 			result = ps.executeUpdate();
@@ -132,11 +122,11 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 
 				int result = 0;
 				try (PreparedStatement ps = connection.prepareStatement(
-						"INSERT INTO impiegato (nome, cognome, codicefiscale , datadinascita, dataassunzione) VALUES (?, ?, ?, ?, ?);")) {
+						"INSERT INTO impiegato (nome, cognome, codicefiscale , datanascita, dataassunzione) VALUES (?, ?, ?, ?, ?);")) {
 					ps.setString(1, input.getNome());
 					ps.setString(2, input.getCognome());
 					ps.setString(3, input.getCodiceFiscale());
-					ps.setDate(4, java.sql.Date.valueOf(input.getDataDiNascita()));
+					ps.setDate(4, java.sql.Date.valueOf(input.getDataNascita()));
 					ps.setDate(5, java.sql.Date.valueOf(input.getDataAssunzione()));
 					
 					result = ps.executeUpdate();

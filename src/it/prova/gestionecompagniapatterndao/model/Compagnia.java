@@ -8,7 +8,7 @@ import java.util.List;
 public class Compagnia {
 	
 	private Long id;
-	private String ragionesociale;
+	private String ragioneSociale;
 	private double fatturatoAnnuo;
 	private LocalDate dataFondazione;
 	private List<Impiegato> impiegati = new ArrayList<>();
@@ -17,19 +17,25 @@ public class Compagnia {
 		
 	}
 	
-	public Compagnia(Long id, String ragionesociale, double fatturatoAnnuo, LocalDate dataFondazione) {
+	public Compagnia(String ragioneSociale,double fatturatoAnnuo,LocalDate dataFondazione) {
+		this.ragioneSociale=ragioneSociale;
+		this.fatturatoAnnuo=fatturatoAnnuo;
+		this.dataFondazione=dataFondazione;
+	}
+	
+	public Compagnia(Long id, String ragioneSociale, double fatturatoAnnuo, LocalDate dataFondazione) {
 		super();
 		this.id = id;
-		this.ragionesociale = ragionesociale;
+		this.ragioneSociale = ragioneSociale;
 		this.fatturatoAnnuo = fatturatoAnnuo;
 		this.dataFondazione = dataFondazione;
 	}
 
-	public Compagnia(Long id, String ragionesociale, double fatturatoAnnuo, LocalDate dataFondazione,
+	public Compagnia(Long id, String ragioneSociale, double fatturatoAnnuo, LocalDate dataFondazione,
 			List<Impiegato> impiegati) {
 		super();
 		this.id = id;
-		this.ragionesociale = ragionesociale;
+		this.ragioneSociale = ragioneSociale;
 		this.fatturatoAnnuo = fatturatoAnnuo;
 		this.dataFondazione = dataFondazione;
 		this.impiegati = impiegati;
@@ -40,11 +46,11 @@ public class Compagnia {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getRagionesociale() {
-		return ragionesociale;
+	public String getRagioneSociale() {
+		return ragioneSociale;
 	}
-	public void setRagionesociale(String ragionesociale) {
-		this.ragionesociale = ragionesociale;
+	public void setRagionesociale(String ragioneSociale) {
+		this.ragioneSociale = ragioneSociale;
 	}
 	public double getFatturatoAnnuo() {
 		return fatturatoAnnuo;
@@ -67,7 +73,7 @@ public class Compagnia {
 
 	@Override
 	public String toString() {
-		return "Compagnia [id=" + id + ", ragionesociale=" + ragionesociale + ", fatturatoAnnuo=" + fatturatoAnnuo
+		return "Compagnia [id=" + id + ", ragionesociale=" + ragioneSociale + ", fatturatoAnnuo=" + fatturatoAnnuo
 				+ ", dataFondazione=" + dataFondazione + ", impiegati=" + impiegati + "]";
 	}
 	
