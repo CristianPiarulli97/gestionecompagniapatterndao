@@ -53,7 +53,16 @@ public class TestGestioneCompagniaPatternDao {
 		//	testFindAllByRagioneSocialeContiene(compagniaDAOInstance);
 		//	System.out.println("in tabella sono presenti "+ compagniaDAOInstance.list().size()+" elementi.");
 			
-			testFindAllByCodFisImpiegatoContiene(compagniaDAOInstance, impiegatoDAOInstance);
+		// 	testFindAllByCodFisImpiegatoContiene(compagniaDAOInstance, impiegatoDAOInstance);
+			
+		//	testFindAllByCompagnia(compagniaDAOInstance, impiegatoDAOInstance);
+			
+		//	testFindAllByCompagniaConFatturatoMaggioreDi(compagniaDAOInstance, impiegatoDAOInstance);
+			
+		//	testCountByDataFondazioneCompagniaGreaterThan(compagniaDAOInstance, impiegatoDAOInstance);
+			
+			testFindAllByRagioneSocialeContiene(compagniaDAOInstance);
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -130,11 +139,11 @@ public class TestGestioneCompagniaPatternDao {
 		System.out.println(".......testFindAllByDataAssunzioneMaggioreDi fine: PASSED.............");
 	}
 
-	private static void testFindAllByRagioneSocialeContiene(CompagniaDAO compagniaDAOInstance) throws Exception {
+	private static void testFindAllByRagioneSocialeContiene (CompagniaDAO compagniaDAOInstance) throws Exception {
 		System.out.println("......testFindAllByRagioneSocialeContiene inizio......");
-		List<Compagnia> compagnieEsistenti = compagniaDAOInstance.list();
-		String parteNomeRagioneSociale = "Fe";
-		List<Compagnia> result = compagniaDAOInstance.findAllByRagioneSocialeContiene(parteNomeRagioneSociale);
+		List<Compagnia> compagnieEsistenti= compagniaDAOInstance.list();
+		String parteNomeRagioneSociale= "EN";
+		List<Compagnia> result=compagniaDAOInstance.findAllByRagioneSocialeContiene(parteNomeRagioneSociale);
 		System.out.println(result);
 		System.out.println("......testFindAllByRagioneSocialeContiene fine......");
 
@@ -159,4 +168,57 @@ public class TestGestioneCompagniaPatternDao {
 		System.out.println(".......testFindAllByCodFisImpiegatoContiene fine: PASSED.............");
 	}
 
+	public static void testFindAllByCompagnia(CompagniaDAO compagniaDAOInstance, ImpiegatoDAO impiegatoDAOInstance) throws Exception {
+		System.out.println("......testFindAllByCompagnia inizio.........");
+		List<Compagnia> elencoCompagnie=compagniaDAOInstance.list();
+		if(elencoCompagnie.size()<1) {
+			throw new RuntimeException("errore: non sono presenti compagnie sul db.");
+		}
+		List<Impiegato> elencoImpiegati= impiegatoDAOInstance.list();
+		if (elencoImpiegati.size()<1) {
+			throw new RuntimeException ("errore: non sono presenti impiegati sul db.");
+		}
+		Compagnia compagnieDaRicercare= elencoCompagnie.get(1);
+		List<Impiegato> impiegatiDellaCompagnia= impiegatoDAOInstance.findAllByCompagnia(compagnieDaRicercare);
+		if (impiegatiDellaCompagnia.size()<1) {
+			throw new RuntimeException("non è stato trovato nulla");
+		}
+		System.out.println("gli elementi che corrispondono sono "+impiegatiDellaCompagnia.size() );
+		System.out.println(impiegatiDellaCompagnia);
+		System.out.println("..........testFindAllByCompagnia fine......");
+
+	}
+	
+	private static void testFindAllByCompagniaConFatturatoMaggioreDi (CompagniaDAO compagniaDAOInstance, ImpiegatoDAO impiegatoDAOInstance) throws Exception{
+		System.out.println(".......testFindAllByCompagniaConFatturatoMaggioreDi inizio.......");
+		List<Compagnia> elencoCompagniePresenti = compagniaDAOInstance.list();
+		if (elencoCompagniePresenti.size() < 1)
+			throw new RuntimeException(
+					"errore: non sono presenti compagnie sul DB");
+		List<Impiegato> elencoImpiegatiPresenti = impiegatoDAOInstance.list();
+		if (elencoImpiegatiPresenti.size() < 1)
+			throw new RuntimeException(
+					"errore: non sono presenti impiegati sul DB");
+		int fatturatoDaRicercare= 70;
+		List<Impiegato> impiegatiCompagniaConFatturatoMaggioreDi= impiegatoDAOInstance.findAllByCompagniaConFatturatoMaggioreDi(fatturatoDaRicercare);
+		System.out.println("gli impiegati in compagnie con fatturato maggiore di "+ impiegatiCompagniaConFatturatoMaggioreDi.size()+ " elementi.");
+		System.out.println(impiegatiCompagniaConFatturatoMaggioreDi);
+		System.out.println(".......testFindAllByCompagniaConFatturatoMaggioreDi fine.........");
+	}
+	
+	private static void testCountByDataFondazioneCompagniaGreaterThan(CompagniaDAO compagniaDAOInstance, ImpiegatoDAO impiegatoDAOInstance) throws Exception {
+		System.out.println("......testCountByDataFondazioneCompagniaGreaterThan inizio........");
+		List<Compagnia> elencoCompagniePresenti = compagniaDAOInstance.list();
+		if (elencoCompagniePresenti.size() < 1)
+			throw new RuntimeException(
+					"errore: non sono presenti compagnie sul DB");
+		List<Impiegato> elencoImpiegatiPresenti = impiegatoDAOInstance.list();
+		if (elencoImpiegatiPresenti.size() < 1)
+			throw new RuntimeException(
+					"errore: non sono presenti impiegati sul DB");
+		LocalDate dataDaRicercare = LocalDate.parse("1890-04-30");
+		int countImpiegati = impiegatoDAOInstance.countByDataFondazioneCompagniaGreaterThan(dataDaRicercare);
+		System.out.println("Il contatore segna: " + countImpiegati);
+		System.out.println(".......testCountByDataFondazioneCompagniaGreaterThan fine: PASSED.............");
+	}
 }

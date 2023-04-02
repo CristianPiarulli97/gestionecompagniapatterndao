@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,91 +163,121 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 	}
 	
 	public List findAllByCompagnia(Compagnia compagniaInput) throws Exception {
-		return null;
 		
-/*		if (isNotActive())
+		if (isNotActive())
 			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
-
-		
+		if (compagniaInput == null) {
+			throw new Exception("errore: non è stato inserito alcuna compagnia!");
+		}
 		List<Impiegato> result = new ArrayList<Impiegato>();
 
-		if (compagniaInput == null)
-			throw new RuntimeException("Impossibile caricare Negozio: id mancante!");
-
-		Impiegato temp = null;
-		try (Connection c = MyConnection.getConnection();
-				PreparedStatement ps = c.prepareStatement("select d from impiegato i inner join compagnia c on c.id=i.id_compagnia where id_compagnia=?; ")) {
+		try (PreparedStatement ps = connection
+				.prepareStatement("select * from impiegato i inner join compagnia c on i.id_compagnia=c.id where c.id like ?");) {
 
 			ps.setLong(1, compagniaInput.getId());
 			try (ResultSet rs = ps.executeQuery()) {
+
 				while (rs.next()) {
-					temp = new Impiegato();
+					Impiegato temp = new Impiegato();
 					temp.setId(rs.getLong("id"));
 					temp.setNome(rs.getString("nome"));
 					temp.setCognome(rs.getString("cognome"));
-					temp.getCodiceFiscale(rs.getString("codicefiscale"));
-					temp.get
-
+					temp.setCodiceFiscale(rs.getString("codicefiscale"));
+					temp.setDataNascita(
+							rs.getDate("datanascita") != null ? rs.getDate("datanascita").toLocalDate() : null);
+					temp.setDataAssunzione(
+							rs.getDate("dataassunzione") != null ? rs.getDate("dataassunzione").toLocalDate() : null);
 					result.add(temp);
 
 				}
-
-				negozioInput.setArticoli(result);
-
-			} // niente catch qui
+			}
 
 		} catch (Exception e) {
+
 			e.printStackTrace();
-			throw new RuntimeException(e);
+
 		}
 		return result;
-*/
 	}
+		
+		
 
 
-	public int countByDataFondazioneCompagniaGreaterThan(Date dataInput) throws Exception {
+	public int countByDataFondazioneCompagniaGreaterThan(LocalDate dataInput) throws Exception {
 
 		if (isNotActive())
 			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
 
-		if (dataInput == null || dataInput==null)
+		if (dataInput == null)
 			throw new Exception("Valore di input non ammesso.");
 
-		int contatore = 0;
+		int count = 0;
 
-		try (PreparedStatement ps = connection.prepareStatement("select count(datafondazione) from compagnia where datafondazione > ? ;")) {
-			// quando si fa il setDate serve un tipo java.sql.Date
-			ps.setDate(1, dataInput);
-			
-			try (ResultSet rs = ps.executeQuery();) {
+		try (PreparedStatement ps = connection.prepareStatement(
+				"select count(datafondazione) from compagnia c inner join impiegato i on c.id=i.id_compagnia where datafondazione > ? ;")) {
+			ps.setDate(1, java.sql.Date.valueOf(dataInput));
+
+			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {
-					Compagnia compagniaTemp = new Compagnia();
-					compagniaTemp.setRagionesociale(rs.getString("ragionesociale"));
-					compagniaTemp.setFatturatoAnnuo(rs.getDouble("fatturatoannuo"));
-					compagniaTemp.setDataFondazione(
-							rs.getDate("datafondazione") != null ? rs.getDate("datafondazione").toLocalDate() : null);
-					compagniaTemp.setId(rs.getLong("ID"));
-					contatore++;
+					count = rs.getInt("count(datafondazione)");
 				}
-			} // niente catch qui
-
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
-		
-		return contatore;
+		return count;
 	}
 
 	public List findAllByCompagniaConFatturatoMaggioreDi(int fatturatoInput) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		if (fatturatoInput == 0)
+			throw new Exception("Valore non ammesso.");
+
+		ArrayList<Impiegato> result = new ArrayList<Impiegato>();
+
+		try (PreparedStatement ps = connection.prepareStatement(
+				"select * from compagnia c inner join impiegato i on c.id=i.id_compagnia where c.fatturatoannuo > ? ;")) {
+			ps.setInt(1, fatturatoInput);
+
+			try (ResultSet rs = ps.executeQuery();) {
+				while (rs.next()) {
+					Compagnia compagniaTemp = new Compagnia();
+					compagniaTemp.setRagionesociale(rs.getString("ragionesociale"));
+					compagniaTemp.setFatturatoAnnuo(rs.getInt("fatturatoannuo"));
+					compagniaTemp.setDataFondazione(
+							rs.getDate("datafondazione") != null ? rs.getDate("datafondazione").toLocalDate() : null);
+					compagniaTemp.setId(rs.getLong("id"));
+
+					Impiegato impiegatoTemp = new Impiegato();
+					impiegatoTemp.setId(rs.getLong("id"));
+					impiegatoTemp.setNome(rs.getString("nome"));
+					impiegatoTemp.setCognome(rs.getString("cognome"));
+					impiegatoTemp.setCodiceFiscale(rs.getString("codicefiscale"));
+					impiegatoTemp.setDataNascita(
+							rs.getDate("datanascita") != null ? rs.getDate("datanascita").toLocalDate() : null);
+					impiegatoTemp.setDataAssunzione(
+							rs.getDate("dataassunzione") != null ? rs.getDate("dataassunzione").toLocalDate() : null);
+					impiegatoTemp.setCompagnia(compagniaTemp);
+
+					result.add(impiegatoTemp);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
+			return result;
+		}
 	}
 
 	public List findAllErroriAssunzione() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 	
 	
 	
