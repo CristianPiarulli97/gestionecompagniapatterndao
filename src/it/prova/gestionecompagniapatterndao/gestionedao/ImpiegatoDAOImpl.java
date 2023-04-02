@@ -238,7 +238,7 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 		return contatore;
 	}
 
-	public List findAllByCompagniaConFatturatoMaggioreDi(int fattura) throws Exception {
+	public List findAllByCompagniaConFatturatoMaggioreDi(int fatturatoInput) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
