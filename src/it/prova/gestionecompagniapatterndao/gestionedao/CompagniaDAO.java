@@ -14,4 +14,5 @@ public interface CompagniaDAO extends IBaseDAO<Compagnia>{
 	public List<Compagnia> findAllByCodFisImpiegatoContiene(String parteCodiceFiscaleInput) throws Exception;
 	public List<Compagnia> findAllByDataAssunzioneMaggioreDi(LocalDate dataDaRicercare) throws Exception;
 	
+	
 }

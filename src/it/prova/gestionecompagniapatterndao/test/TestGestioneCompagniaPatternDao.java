@@ -49,7 +49,9 @@ public class TestGestioneCompagniaPatternDao {
 			// System.out.println("in tabella sono presenti "+
 			// compagniaDAOInstance.list().size()+ " elementi.");
 			// -------------
-
+		
+			
+			
 		//	testFindAllByRagioneSocialeContiene(compagniaDAOInstance);
 		//	System.out.println("in tabella sono presenti "+ compagniaDAOInstance.list().size()+" elementi.");
 			
@@ -61,8 +63,11 @@ public class TestGestioneCompagniaPatternDao {
 			
 		//	testCountByDataFondazioneCompagniaGreaterThan(compagniaDAOInstance, impiegatoDAOInstance);
 			
-			testFindAllByRagioneSocialeContiene(compagniaDAOInstance);
+		//	testFindAllByRagioneSocialeContiene(compagniaDAOInstance);
 			
+		//	testFindAllErroriAssunzione(compagniaDAOInstance, impiegatoDAOInstance);
+			
+			testFindByExampleImpiegato(impiegatoDAOInstance);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -220,5 +225,36 @@ public class TestGestioneCompagniaPatternDao {
 		int countImpiegati = impiegatoDAOInstance.countByDataFondazioneCompagniaGreaterThan(dataDaRicercare);
 		System.out.println("Il contatore segna: " + countImpiegati);
 		System.out.println(".......testCountByDataFondazioneCompagniaGreaterThan fine: PASSED.............");
+	}
+	
+	private static void testFindAllErroriAssunzione(CompagniaDAO compagniaDAOInstance, ImpiegatoDAO impiegatoDAOInstance) throws Exception {
+		System.out.println("..........testFindAllErroriAssunzione inizio........");
+		List<Compagnia> elencoCompagniePresenti = compagniaDAOInstance.list();
+		if (elencoCompagniePresenti.size() < 1)
+			throw new RuntimeException(
+					"errore: non sono presenti compagnie sul DB");
+		List<Impiegato> elencoImpiegatiPresenti = impiegatoDAOInstance.list();
+		if (elencoImpiegatiPresenti.size() < 1)
+			throw new RuntimeException(
+					"errore: non sono presenti impiegati sul DB");
+		List<Impiegato> impiegatiConErroreAssunzione= impiegatoDAOInstance.findAllErroriAssunzione();
+		System.out.println("gli impiegati con errori di assunzione sono " +impiegatiConErroreAssunzione.size() );
+		System.out.println(impiegatiConErroreAssunzione);
+		System.out.println("........testFindAllErroriAssunzione fine.........");
+	}
+	
+	private static void testFindByExampleImpiegato(ImpiegatoDAO impiegatoDAOInstance) throws Exception {
+		System.out.println(".......testFindByExampleImpiegato inizio......");
+		List<Impiegato> elencoVociPresenti = impiegatoDAOInstance.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testFindByExampleImpiegato : FAILED, non ci sono voci sul DB");
+		Impiegato impiegatoExample = new Impiegato("L", "B");
+		List<Impiegato> listaCompagniaLikeExample = impiegatoDAOInstance.findByExample(impiegatoExample);
+		if (listaCompagniaLikeExample.size() < 1) {
+			throw new RuntimeException("testFindByExampleImpiegato : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println("Gli elementi della lista sono: " + listaCompagniaLikeExample.size());
+		System.out.println(listaCompagniaLikeExample);
+		System.out.println(".......testFindByExampleImpiegato fine: PASSED.............");
 	}
 }

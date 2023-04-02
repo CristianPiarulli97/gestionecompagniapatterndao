@@ -17,6 +17,13 @@ public class Impiegato {
 		
 	}
 	
+	public Impiegato(String nome,String cognome) {
+		
+		this.nome=nome;
+		this.cognome=cognome;
+	}
+	
+	
 	public Impiegato(String nome, String cognome, String codiceFiscale, LocalDate dataNascita,
 			LocalDate dataAssunzione) {
 		
